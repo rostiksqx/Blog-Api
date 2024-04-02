@@ -2,7 +2,6 @@
 using AuthCookies.API.UserEndpoints;
 using AuthCookies.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthCookies.API.Extensions;
@@ -12,6 +11,7 @@ public static class ApiExtensions
     public static void AddMappedEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapUsersEndpoints();
+        app.MapPostEndpoints();
     }
 
     public static void AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)

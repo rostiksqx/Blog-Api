@@ -2,7 +2,7 @@
 
 public class Post
 {
-    private Post(Guid id, string title, string content)
+    public Post(Guid id, string title, string content)
     {
         Id = id;
         Title = title;
@@ -15,7 +15,7 @@ public class Post
     
     public string Content { get; } = String.Empty;
 
-    public static (Post post, string error) Create(Guid id, string title, string content)
+    public static Post Create(Guid id, string title, string content)
     {
         var error = string.Empty;
 
@@ -25,7 +25,7 @@ public class Post
         }
 
         var post = new Post(id, title, content);
-        
-        return (post, error);
+
+        return post;
     }
 }
