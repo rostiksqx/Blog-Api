@@ -6,9 +6,9 @@ namespace AuthCookies.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly UserDbContext _dbContext;
+    private readonly BlogDbContext _dbContext;
 
-    public UserRepository(UserDbContext dbContext)
+    public UserRepository(BlogDbContext dbContext)
     {
         _dbContext = dbContext;
     }

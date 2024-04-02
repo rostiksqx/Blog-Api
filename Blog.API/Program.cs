@@ -15,10 +15,10 @@ builder.Services.AddApiAuthentication(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<UserDbContext>(
+builder.Services.AddDbContext<BlogDbContext>(
     options =>
     {
-        options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(UserDbContext)));
+        options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(BlogDbContext)));
     });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
