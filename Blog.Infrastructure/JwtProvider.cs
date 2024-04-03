@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AuthCookies.Core.Models;
+using Blog.Core.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AuthCookies.Infrastructure;
+namespace Blog.Infrastructure;
 
 public class JwtProvider : IJwtProvider
 {
@@ -32,5 +32,13 @@ public class JwtProvider : IJwtProvider
         var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
         
         return tokenValue;
+    }
+    
+    public string GetUserId(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+        
+        return tokenS!.Claims.First(claim => claim.Type == "userId").Value ?? string.Empty;
     }
 }

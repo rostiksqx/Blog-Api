@@ -1,6 +1,6 @@
-﻿using AuthCookies.Core.Models;
+﻿using Blog.Core.Models;
 
-namespace AuthCookies.Persistence.Repositories;
+namespace Blog.Persistence.Repositories;
 
 public interface IUserRepository
 {

@@ -1,8 +1,8 @@
-﻿using AuthCookies.Core.Models;
-using AuthCookies.Infrastructure;
-using AuthCookies.Persistence.Repositories;
+﻿using Blog.Core.Models;
+using Blog.Infrastructure;
+using Blog.Persistence.Repositories;
 
-namespace AuthCookies.Application.Services;
+namespace Blog.Application.Services;
 
 public class UsersService
 {

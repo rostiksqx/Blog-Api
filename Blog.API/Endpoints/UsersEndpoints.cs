@@ -1,7 +1,7 @@
-﻿using AuthCookies.API.Contracts;
-using AuthCookies.Application.Services;
+﻿using Blog.API.Contracts;
+using Blog.Application.Services;
 
-namespace AuthCookies.API.UserEndpoints;
+namespace Blog.API.Endpoints;
 
 public static class UsersEndpoints
 {

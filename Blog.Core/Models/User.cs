@@ -1,4 +1,4 @@
-﻿namespace AuthCookies.Core.Models;
+﻿namespace Blog.Core.Models;
 
 public class User
 {

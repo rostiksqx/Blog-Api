@@ -1,10 +1,10 @@
 ﻿using System.Text;
-using AuthCookies.API.UserEndpoints;
-using AuthCookies.Infrastructure;
+using Blog.API.Endpoints;
+using Blog.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AuthCookies.API.Extensions;
+namespace Blog.API.Extensions;
 
 public static class ApiExtensions
 {

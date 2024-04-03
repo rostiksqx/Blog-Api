@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AuthCookies.Persistence.Migrations
+namespace Blog.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

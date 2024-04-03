@@ -1,8 +1,10 @@
-﻿using AuthCookies.Core.Models;
+﻿using Blog.Core.Models;
 
-namespace AuthCookies.Infrastructure;
+namespace Blog.Infrastructure;
 
 public interface IJwtProvider
 {
     string GenerateToken(User user);
+    
+    string GetUserId(string token);
 }

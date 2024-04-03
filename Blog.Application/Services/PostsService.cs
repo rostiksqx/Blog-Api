@@ -1,31 +1,36 @@
-﻿using AuthCookies.Core.Models;
-using AuthCookies.Persistence.Repositories;
+﻿using Blog.Core.Models;
+using Blog.Infrastructure;
+using Blog.Persistence.Repositories;
 
-namespace AuthCookies.Application.Services;
+namespace Blog.Application.Services;
 
 public class PostsService
 {
     private readonly IPostRepository _postRepository;
+    private readonly IJwtProvider _jwtProvider;
 
-    public PostsService(IPostRepository postRepository)
+    public PostsService(IPostRepository postRepository, IJwtProvider jwtProvider)
     {
         _postRepository = postRepository;
+        _jwtProvider = jwtProvider;
     }
     
-    public async Task Add(string title, string content)
+    public async Task Add(string title, string content, string token)
     {
         var post = Post.Create(Guid.NewGuid(), title, content);
         
-        await _postRepository.Add(post);
+        var userId = _jwtProvider.GetUserId(token);
+        
+        await _postRepository.Add(post, Guid.Parse(userId));
     }
     
-    public async Task GetAll()
+    public async Task<Post> Get(Guid id)
     {
-        await _postRepository.GetAll();
+        return await _postRepository.Get(id);
     }
     
-    public async Task Get(Guid id)
+    public async Task<IEnumerable<Post>> GetAll()
     {
-        await _postRepository.Get(id);
+        return await _postRepository.GetAll();
     }
 }

@@ -1,8 +1,8 @@
-﻿using AuthCookies.Persistence.Entities;
+﻿using Blog.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AuthCookies.Persistence.Configurations;
+namespace Blog.Persistence.Configurations;
 
 public class PostConfiguration : IEntityTypeConfiguration<PostEntity>
 {

@@ -1,7 +1,7 @@
-﻿using AuthCookies.Persistence.Entities;
+﻿using Blog.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuthCookies.Persistence;
+namespace Blog.Persistence;
 
 public class BlogDbContext : DbContext
 {

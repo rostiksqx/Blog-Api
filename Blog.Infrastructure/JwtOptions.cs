@@ -1,4 +1,4 @@
-﻿namespace AuthCookies.Infrastructure;
+﻿namespace Blog.Infrastructure;
 
 public class JwtOptions
 {

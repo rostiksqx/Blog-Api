@@ -1,6 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 
-namespace AuthCookies.API.Contracts;
+namespace Blog.API.Contracts;
 
 public record PostRequest(
     string Title, 

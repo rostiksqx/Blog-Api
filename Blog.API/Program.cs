@@ -1,8 +1,8 @@
-using AuthCookies.API.Extensions;
-using AuthCookies.Application.Services;
-using AuthCookies.Infrastructure;
-using AuthCookies.Persistence;
-using AuthCookies.Persistence.Repositories;
+using Blog.API.Extensions;
+using Blog.Application.Services;
+using Blog.Infrastructure;
+using Blog.Persistence;
+using Blog.Persistence.Repositories;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,8 +1,8 @@
-﻿using AuthCookies.Core.Models;
-using AuthCookies.Persistence.Entities;
+﻿using Blog.Core.Models;
+using Blog.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuthCookies.Persistence.Repositories;
+namespace Blog.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AuthCookies.API.Contracts;
+namespace Blog.API.Contracts;
 
 public record LoginUserRequest(
     [Required]string Email,

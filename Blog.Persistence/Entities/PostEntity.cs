@@ -1,4 +1,4 @@
-﻿namespace AuthCookies.Persistence.Entities;
+﻿namespace Blog.Persistence.Entities;
 
 public class PostEntity
 {

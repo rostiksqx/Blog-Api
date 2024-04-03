@@ -1,10 +1,10 @@
-﻿using AuthCookies.Core.Models;
+﻿using Blog.Core.Models;
 
-namespace AuthCookies.Persistence.Repositories;
+namespace Blog.Persistence.Repositories;
 
 public interface IPostRepository
 {
-    Task Add(Post post);
+    Task Add(Post post, Guid userId);
     Task<Post> Get(Guid id);
     Task<IEnumerable<Post>> GetAll();
 }
