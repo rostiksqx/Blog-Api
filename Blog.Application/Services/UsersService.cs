@@ -41,4 +41,11 @@ public class UsersService
         
         return token;
     }
+    
+    public async Task<User> GetWithPosts(string email)
+    {
+        var user = await _userRepository.GetWithPosts(email);
+        
+        return user;
+    }
 }

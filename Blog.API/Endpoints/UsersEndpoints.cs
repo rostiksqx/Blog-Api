@@ -1,5 +1,8 @@
 ﻿using Blog.API.Contracts;
 using Blog.Application.Services;
+using Blog.Core.Models;
+using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Endpoints;
 
@@ -16,9 +19,18 @@ public static class UsersEndpoints
         endpoints.MapGet("me", GetMe)
             .RequireAuthorization();
 
+        endpoints.MapGet("meWithPosts", GetMeWithPosts);
+        
         return endpoints;
     }
-    
+
+    private static async Task<IResult> GetMeWithPosts([FromBody] RegisterUserRequest request, [FromServices] UsersService usersService)
+    {
+        var userWithPosts = await usersService.GetWithPosts(request.Email);
+        
+        return Results.Ok(userWithPosts);
+    }
+
     private static Task<IResult> GetMe()
     {
         return Task.FromResult(Results.Ok());
