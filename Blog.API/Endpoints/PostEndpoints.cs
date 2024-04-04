@@ -9,7 +9,8 @@ public static class PostEndpoints
     {
         var endpoints = app.MapGroup("api");
         
-        endpoints.MapPost("posts", CreatePost);
+        endpoints.MapPost("posts", CreatePost)
+            .RequireAuthorization();
         
         endpoints.MapGet("posts", GetAllPosts);
         

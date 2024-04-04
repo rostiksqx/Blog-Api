@@ -33,17 +33,20 @@ public class UserRepository : IUserRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email == email) ?? throw new Exception("User not found");
 
-        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash);
+        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, []);
     }
 
-    public async Task<User> GetWithPosts(string email)
+    public async Task<UserResponse> GetUser(Guid id)
     {
         var userEntity = await _dbContext.Users
             .AsNoTracking()
-            .Where(x => x.Email == email)
+            .Where(x => x.Id == id)
             .Include(x => x.Posts)
             .FirstOrDefaultAsync() ?? throw new Exception("User not found");
 
-        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash);
+        var posts = userEntity.Posts.Select(p => new Post(p.Id, p.Title, p.Content)).ToList();
+        
+
+        return new UserResponse(userEntity.Id, userEntity.Username, userEntity.Email, posts);
     }
 }

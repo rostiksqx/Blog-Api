@@ -42,9 +42,11 @@ public class UsersService
         return token;
     }
     
-    public async Task<User> GetWithPosts(string email)
+    public async Task<UserResponse> GetUser(string token)
     {
-        var user = await _userRepository.GetWithPosts(email);
+        var userId = _jwtProvider.GetUserId(token);
+        
+        var user = await _userRepository.GetUser(Guid.Parse(userId));
         
         return user;
     }

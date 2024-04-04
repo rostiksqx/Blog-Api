@@ -8,5 +8,5 @@ public interface IUserRepository
     
     Task<User> GetByEmail(string email);
     
-    Task<User> GetWithPosts(string email);
+    Task<UserResponse> GetUser(Guid id);
 }

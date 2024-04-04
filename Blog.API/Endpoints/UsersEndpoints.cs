@@ -15,25 +15,20 @@ public static class UsersEndpoints
         endpoints.MapPost("register", Register);
         
         endpoints.MapPost("login", Login);
-        
+
         endpoints.MapGet("me", GetMe)
             .RequireAuthorization();
-
-        endpoints.MapGet("meWithPosts", GetMeWithPosts);
         
         return endpoints;
     }
 
-    private static async Task<IResult> GetMeWithPosts([FromBody] RegisterUserRequest request, [FromServices] UsersService usersService)
+    private static async Task<IResult> GetMe(UsersService usersService, HttpContext context)
     {
-        var userWithPosts = await usersService.GetWithPosts(request.Email);
+        var token = context.Request.Cookies["cookies"];
+        
+        var userWithPosts = await usersService.GetUser(token);
         
         return Results.Ok(userWithPosts);
-    }
-
-    private static Task<IResult> GetMe()
-    {
-        return Task.FromResult(Results.Ok());
     }
 
     private static async Task<IResult> Register(RegisterUserRequest request, UsersService usersService)
