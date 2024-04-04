@@ -17,9 +17,9 @@ public class PostsService
     
     public async Task Add(string title, string content, string token)
     {
-        var post = Post.Create(Guid.NewGuid(), title, content);
-        
         var userId = _jwtProvider.GetUserId(token);
+
+        var post = Post.Create(Guid.NewGuid(), title, content, Guid.Parse(userId));
         
         await _postRepository.Add(post, Guid.Parse(userId));
     }

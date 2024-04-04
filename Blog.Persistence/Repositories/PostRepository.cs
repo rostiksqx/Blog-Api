@@ -33,7 +33,7 @@ public class PostRepository : IPostRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Post not found.");
         
-        return new Post(postEntity.Id, postEntity.Title, postEntity.Content);
+        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId);
     }
     
     public async Task<IEnumerable<Post>> GetAll()
@@ -43,7 +43,7 @@ public class PostRepository : IPostRepository
             .ToListAsync();
         
         var posts = postEntities
-            .Select(x => new Post(x.Id, x.Title, x.Content));
+            .Select(x => new Post(x.Id, x.Title, x.Content, x.UserId));
         
         return posts;
     }

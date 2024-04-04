@@ -44,7 +44,7 @@ public class UserRepository : IUserRepository
             .Include(x => x.Posts)
             .FirstOrDefaultAsync() ?? throw new Exception("User not found");
 
-        var posts = userEntity.Posts.Select(p => new Post(p.Id, p.Title, p.Content)).ToList();
+        var posts = userEntity.Posts.Select(p => new Post(p.Id, p.Title, p.Content, p.UserId)).ToList();
         
 
         return new UserResponse(userEntity.Id, userEntity.Username, userEntity.Email, posts);
