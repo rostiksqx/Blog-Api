@@ -53,6 +53,12 @@ public static class ApiExtensions
                 policy.RequireAuthenticatedUser();
                 policy.RequireRole("admin");
             });
+            
+            options.AddPolicy("SuperAdminPolicy", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole("SuperAdmin");
+            });
         });
     }
 }

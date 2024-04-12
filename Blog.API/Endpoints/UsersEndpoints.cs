@@ -19,7 +19,8 @@ public static class UsersEndpoints
         endpoints.MapGet("me", GetMe);
             // .RequireAuthorization();
         
-        endpoints.MapGet("users/{userId}/promote", PromoteUser);
+        endpoints.MapGet("users/{userId:guid}/promote", PromoteUser)
+            .RequireAuthorization("SuperAdminPolicy");
         
         return endpoints;
     }
@@ -49,9 +50,9 @@ public static class UsersEndpoints
         return Results.Ok();
     }
     
-    private static async Task<IResult> PromoteUser(string userId, UsersService usersService)
+    private static async Task<IResult> PromoteUser(Guid userId, UsersService usersService)
     {
-        await usersService.PromoteToAdmin(Guid.Parse(userId));
+        await usersService.PromoteToAdmin(userId);
         
         return Results.Ok();
     }
