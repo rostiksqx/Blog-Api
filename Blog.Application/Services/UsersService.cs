@@ -21,7 +21,7 @@ public class UsersService
     {
         var hashPassword = _passwordHasher.Generate(password);
         
-        var user = User.Create(Guid.NewGuid(), username, email, hashPassword);
+        var user = User.Create(Guid.NewGuid(), username, email, hashPassword, "user");
         
         await _userRepository.Add(user);
     }
@@ -49,5 +49,10 @@ public class UsersService
         var user = await _userRepository.GetUser(Guid.Parse(userId));
         
         return user;
+    }
+
+    public async Task PromoteToAdmin(Guid id)
+    {
+        await _userRepository.PromoteToAdmin(id);
     }
 }

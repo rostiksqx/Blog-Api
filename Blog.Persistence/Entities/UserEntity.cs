@@ -10,5 +10,7 @@ public class UserEntity
     
     public string PasswordHash { get; set; }
     
+    public string Role { get; set; } = "user";
+    
     public List<PostEntity> Posts { get; set; } 
 }

@@ -8,11 +8,11 @@ public static class PostEndpoints
     public static IEndpointRouteBuilder MapPostEndpoints(this IEndpointRouteBuilder app)
     {
         var endpoints = app.MapGroup("api");
+
+        endpoints.MapPost("posts", CreatePost);
         
-        endpoints.MapPost("posts", CreatePost)
-            .RequireAuthorization();
-        
-        endpoints.MapGet("posts", GetAllPosts);
+        endpoints.MapGet("posts", GetAllPosts)
+            .RequireAuthorization("AdminPolicy");
         
         endpoints.MapGet("posts/{id}", GetPost);
         

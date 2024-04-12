@@ -20,7 +20,8 @@ public class UserRepository : IUserRepository
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            PasswordHash = user.PasswordHash
+            PasswordHash = user.PasswordHash,
+            Role = user.Role,
         };
         
         await _dbContext.Users.AddAsync(userEntity);
@@ -33,7 +34,7 @@ public class UserRepository : IUserRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email == email) ?? throw new Exception("User not found");
 
-        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, []);
+        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, []);
     }
 
     public async Task<UserResponse> GetUser(Guid id)
@@ -48,5 +49,20 @@ public class UserRepository : IUserRepository
         
 
         return new UserResponse(userEntity.Id, userEntity.Username, userEntity.Email, posts);
+    }
+
+    public async Task PromoteToAdmin(Guid id)
+    {
+        var userEntity = await _dbContext.Users
+            .Where(x => x.Id == id)
+            .FirstOrDefaultAsync() ?? throw new Exception("User not found");
+        
+        if (userEntity.Role == "admin")
+        {
+            throw new Exception("User is already admin");
+        }
+        
+        userEntity.Role = "admin";
+        await _dbContext.SaveChangesAsync();
     }
 }
