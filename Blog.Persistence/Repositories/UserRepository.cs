@@ -52,11 +52,6 @@ public class UserRepository : IUserRepository
         var userEntity = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
         
-        if (userEntity.Role == "admin")
-        {
-            throw new Exception("User is already admin");
-        }
-        
         userEntity.Role = "admin";
         await _dbContext.SaveChangesAsync();
     }
