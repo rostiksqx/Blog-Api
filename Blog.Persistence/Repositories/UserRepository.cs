@@ -37,18 +37,14 @@ public class UserRepository : IUserRepository
         return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, []);
     }
 
-    public async Task<UserResponse> GetUser(Guid id)
+    public async Task<User> GetUser(Guid id)
     {
         var userEntity = await _dbContext.Users
             .AsNoTracking()
-            .Where(x => x.Id == id)
             .Include(x => x.Posts)
-            .FirstOrDefaultAsync() ?? throw new Exception("User not found");
+            .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
 
-        var posts = userEntity.Posts.Select(p => new Post(p.Id, p.Title, p.Content, p.UserId)).ToList();
-        
-
-        return new UserResponse(userEntity.Id, userEntity.Username, userEntity.Email, posts);
+        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, userEntity.Posts.Select(p => new Post(p.Id, p.Title, p.Content, p.UserId)).ToList());
     }
 
     public async Task PromoteToAdmin(Guid id)
@@ -65,10 +61,10 @@ public class UserRepository : IUserRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdatePassword(string email, string newPassword)
+    public async Task UpdatePassword(Guid id, string newPassword)
     {
         var userEntity = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("User not found");
+            .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
 
         userEntity.PasswordHash = newPassword;
         await _dbContext.SaveChangesAsync();

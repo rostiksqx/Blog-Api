@@ -8,9 +8,9 @@ public interface IUserRepository
     
     Task<User> GetByEmail(string email);
     
-    Task<UserResponse> GetUser(Guid id);
+    Task<User> GetUser(Guid id);
     
     Task PromoteToAdmin(Guid id);
     
-    Task UpdatePassword(string email, string newPassword);
+    Task UpdatePassword(Guid id, string newPassword);
 }

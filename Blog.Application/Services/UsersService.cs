@@ -42,7 +42,7 @@ public class UsersService
         return token;
     }
     
-    public async Task<UserResponse> GetUser(string token)
+    public async Task<User> GetUser(string token)
     {
         var userId = _jwtProvider.GetUserId(token);
         
@@ -56,9 +56,11 @@ public class UsersService
         await _userRepository.PromoteToAdmin(id);
     }
 
-    public async Task UpdatePassword(string email, string password, string newPassword)
+    public async Task UpdatePassword(string token, string password, string newPassword)
     {
-        var user = await _userRepository.GetByEmail(email);
+        var userId = _jwtProvider.GetUserId(token);
+        
+        var user = await _userRepository.GetUser(Guid.Parse(userId));
         
         if (user == null)
         {
@@ -72,6 +74,6 @@ public class UsersService
         
         var hashPassword = _passwordHasher.Generate(newPassword);
         
-        await _userRepository.UpdatePassword(email, hashPassword);
+        await _userRepository.UpdatePassword(Guid.Parse(userId), hashPassword);
     }
 }

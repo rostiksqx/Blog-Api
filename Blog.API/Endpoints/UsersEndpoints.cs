@@ -1,8 +1,5 @@
 ﻿using Blog.API.Contracts;
 using Blog.Application.Services;
-using Blog.Core.Models;
-using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Endpoints;
 
@@ -30,7 +27,7 @@ public static class UsersEndpoints
 
     private static async Task<IResult> GetMe(UsersService usersService, HttpContext context)
     {
-        var token = context.Request.Cookies["cookies"];
+        var token = context.Request.Cookies["cookies"] ?? string.Empty;
         
         var userWithPosts = await usersService.GetUser(token);
         
@@ -60,9 +57,11 @@ public static class UsersEndpoints
         return Results.Ok("User promoted");
     }
     
-    private static async Task<IResult> UpdatePassword(UpdatePasswordRequest request, UsersService usersService)
+    private static async Task<IResult> UpdatePassword(UpdatePasswordRequest request, UsersService usersService, HttpContext context)
     {
-        await usersService.UpdatePassword(request.Email ,request.Password, request.NewPassword);
+        var token = context.Request.Cookies["cookies"] ?? string.Empty;
+        
+        await usersService.UpdatePassword(token ,request.Password, request.NewPassword);
         
         return Results.Ok("Password updated");
     }
