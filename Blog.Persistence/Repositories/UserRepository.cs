@@ -54,8 +54,7 @@ public class UserRepository : IUserRepository
     public async Task PromoteToAdmin(Guid id)
     {
         var userEntity = await _dbContext.Users
-            .Where(x => x.Id == id)
-            .FirstOrDefaultAsync() ?? throw new Exception("User not found");
+            .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
         
         if (userEntity.Role == "admin")
         {
@@ -63,6 +62,15 @@ public class UserRepository : IUserRepository
         }
         
         userEntity.Role = "admin";
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdatePassword(string email, string newPassword)
+    {
+        var userEntity = await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("User not found");
+
+        userEntity.PasswordHash = newPassword;
         await _dbContext.SaveChangesAsync();
     }
 }

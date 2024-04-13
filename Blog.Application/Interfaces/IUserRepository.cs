@@ -11,4 +11,6 @@ public interface IUserRepository
     Task<UserResponse> GetUser(Guid id);
     
     Task PromoteToAdmin(Guid id);
+    
+    Task UpdatePassword(string email, string newPassword);
 }

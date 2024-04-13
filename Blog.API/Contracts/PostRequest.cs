@@ -1,7 +1,7 @@
-﻿using Microsoft.Build.Framework;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Blog.API.Contracts;
 
 public record PostRequest(
-    string Title, 
-    string Content);
+    [Required] string Title, 
+    [Required] string Content);

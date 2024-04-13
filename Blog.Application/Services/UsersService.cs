@@ -55,4 +55,23 @@ public class UsersService
     {
         await _userRepository.PromoteToAdmin(id);
     }
+
+    public async Task UpdatePassword(string email, string password, string newPassword)
+    {
+        var user = await _userRepository.GetByEmail(email);
+        
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+        
+        if (!_passwordHasher.Verify(password, user.PasswordHash))
+        {
+            throw new Exception("Wrong password");
+        }
+        
+        var hashPassword = _passwordHasher.Generate(newPassword);
+        
+        await _userRepository.UpdatePassword(email, hashPassword);
+    }
 }

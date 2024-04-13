@@ -10,17 +10,20 @@ public static class UsersEndpoints
 {
     public static IEndpointRouteBuilder MapUsersEndpoints(this IEndpointRouteBuilder app)
     {
-        var endpoints = app.MapGroup("api");
+        var endpoints = app.MapGroup("api/auth");
         
         endpoints.MapPost("register", Register);
         
         endpoints.MapPost("login", Login);
 
-        endpoints.MapGet("me", GetMe);
-            // .RequireAuthorization();
+        endpoints.MapGet("me", GetMe)
+            .RequireAuthorization();
         
-        endpoints.MapGet("users/{userId:guid}/promote", PromoteUser)
+        endpoints.MapGet("{userId:guid}/promote", PromoteUser)
             .RequireAuthorization("SuperAdminPolicy");
+        
+        endpoints.MapPost("update-password", UpdatePassword)
+            .RequireAuthorization();
         
         return endpoints;
     }
@@ -38,7 +41,7 @@ public static class UsersEndpoints
     {
         await usersService.Register(request.Username, request.Email, request.Password);
         
-        return Results.Ok();
+        return Results.Ok("Welcome to Blog!");
     }
 
     private static async Task<IResult> Login(LoginUserRequest request, UsersService usersService, HttpContext context)
@@ -47,13 +50,20 @@ public static class UsersEndpoints
         
         context.Response.Cookies.Append("cookies", token);
         
-        return Results.Ok();
+        return Results.Ok("Welcome back!");
     }
     
     private static async Task<IResult> PromoteUser(Guid userId, UsersService usersService)
     {
         await usersService.PromoteToAdmin(userId);
         
-        return Results.Ok();
+        return Results.Ok("User promoted");
+    }
+    
+    private static async Task<IResult> UpdatePassword(UpdatePasswordRequest request, UsersService usersService)
+    {
+        await usersService.UpdatePassword(request.Email ,request.Password, request.NewPassword);
+        
+        return Results.Ok("Password updated");
     }
 }

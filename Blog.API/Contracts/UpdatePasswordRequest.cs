@@ -2,7 +2,7 @@
 
 namespace Blog.API.Contracts;
 
-public record RegisterUserRequest(
-    [Required] string Username,
+public record UpdatePasswordRequest(
     [Required] string Email,
-    [Required] string Password);
+    [Required] string Password,
+    [Required] string NewPassword);

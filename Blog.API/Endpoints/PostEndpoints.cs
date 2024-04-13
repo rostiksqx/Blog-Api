@@ -7,14 +7,14 @@ public static class PostEndpoints
 {
     public static IEndpointRouteBuilder MapPostEndpoints(this IEndpointRouteBuilder app)
     {
-        var endpoints = app.MapGroup("api");
+        var endpoints = app.MapGroup("api")
+            .RequireAuthorization("UserPolicy");
 
         endpoints.MapPost("posts", CreatePost);
+
+        endpoints.MapGet("posts", GetAllPosts);
         
-        endpoints.MapGet("posts", GetAllPosts)
-            .RequireAuthorization("AdminPolicy");
-        
-        endpoints.MapGet("posts/{id}", GetPost);
+        endpoints.MapGet("posts/{id:guid}", GetPost);
         
         return endpoints;
     }
