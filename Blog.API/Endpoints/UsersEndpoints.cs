@@ -30,8 +30,10 @@ public static class UsersEndpoints
         var token = context.Request.Cookies["cookies"] ?? string.Empty;
         
         var userWithPosts = await usersService.GetUser(token);
+
+        var user = new UserResponse(userWithPosts.Id, userWithPosts.Username, userWithPosts.Email, userWithPosts.Role);
         
-        return Results.Ok(userWithPosts);
+        return Results.Ok(user);
     }
 
     private static async Task<IResult> Register(RegisterUserRequest request, UsersService usersService)
