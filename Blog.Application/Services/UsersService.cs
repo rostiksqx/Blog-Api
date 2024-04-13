@@ -42,13 +42,15 @@ public class UsersService
         return token;
     }
     
-    public async Task<User> GetUser(string token)
+    public async Task<UserResponse> GetUser(string token)
     {
         var userId = _jwtProvider.GetUserId(token);
         
         var user = await _userRepository.GetUser(Guid.Parse(userId));
         
-        return user;
+        var userResponse = new UserResponse(user.Id, user.Username, user.Email, user.Role, user.Posts);
+        
+        return userResponse;
     }
 
     public async Task PromoteToAdmin(Guid id)
