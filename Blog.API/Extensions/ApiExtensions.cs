@@ -39,7 +39,7 @@ public static class ApiExtensions
                     }
                 };
             });
-        
+        // TODO: Add a role hierarchy
         services.AddAuthorization(options =>
         {
             options.AddPolicy("UserPolicy", policy =>

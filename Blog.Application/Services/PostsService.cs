@@ -33,4 +33,9 @@ public class PostsService
     {
         return await _postRepository.GetAll();
     }
+    
+    public async Task Delete(Guid id)
+    {
+        await _postRepository.Delete(id);
+    }
 }
