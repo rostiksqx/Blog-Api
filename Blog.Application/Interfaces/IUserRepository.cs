@@ -13,4 +13,8 @@ public interface IUserRepository
     Task PromoteToAdmin(Guid id);
     
     Task UpdatePassword(Guid id, string newPassword);
+
+    Task UpdateEmail(Guid id, string newEmail);
+
+    Task Delete(Guid id);
 }

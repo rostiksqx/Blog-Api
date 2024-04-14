@@ -64,4 +64,22 @@ public class UserRepository : IUserRepository
         userEntity.PasswordHash = newPassword;
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task UpdateEmail(Guid id, string newEmail)
+    {
+        var userEntity = await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
+
+        userEntity.Email = newEmail;
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task Delete(Guid id)
+    {
+        var userEntity = await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
+        
+        _dbContext.Users.Remove(userEntity);
+        await _dbContext.SaveChangesAsync();
+    }
 }

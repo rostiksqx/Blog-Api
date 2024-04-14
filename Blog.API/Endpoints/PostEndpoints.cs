@@ -21,7 +21,7 @@ public static class PostEndpoints
     
     private static async Task<IResult> CreatePost(PostRequest request, PostsService postsService, HttpContext context)
     {
-        var token = context.Request.Cookies["cookies"];
+        var token = context.Request.Cookies["cookies"] ?? string.Empty;
         
         await postsService.Add(request.Title, request.Content, token);
         

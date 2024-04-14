@@ -84,4 +84,28 @@ public class UsersService
         
         await _userRepository.UpdatePassword(Guid.Parse(userId), hashPassword);
     }
+
+    public async Task UpdateEmail(string email, string newEmail, string password)
+    {
+        var user = await _userRepository.GetByEmail(email);
+        
+        if (!_passwordHasher.Verify(password, user.PasswordHash))
+        {
+            throw new Exception("Wrong password");
+        }
+        
+        await _userRepository.UpdateEmail(user.Id, newEmail);
+    }
+
+    public async Task DeleteUser(string email, string password)
+    {
+        var user = await _userRepository.GetByEmail(email);
+        
+        if (!_passwordHasher.Verify(password, user.PasswordHash))
+        {
+            throw new Exception("Wrong password");
+        }
+        
+        await _userRepository.Delete(user.Id);
+    }
 }

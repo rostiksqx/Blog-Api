@@ -1,5 +1,6 @@
 ﻿using Blog.API.Contracts;
 using Blog.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Endpoints;
 
@@ -20,6 +21,12 @@ public static class UsersEndpoints
             .RequireAuthorization("SuperAdminPolicy");
         
         endpoints.MapPost("update-password", UpdatePassword)
+            .RequireAuthorization();
+
+        endpoints.MapPost("update-email", UpdateEmail)
+            .RequireAuthorization();
+        
+        endpoints.MapDelete("{userId:guid}/delete", DeleteUser)
             .RequireAuthorization();
         
         return endpoints;
@@ -64,5 +71,19 @@ public static class UsersEndpoints
         await usersService.UpdatePassword(token ,request.Password, request.NewPassword);
         
         return Results.Ok("Password updated");
+    }
+
+    private static async Task<IResult> UpdateEmail(UpdateEmailRequest request, UsersService usersService)
+    {
+        await usersService.UpdateEmail(request.Email, request.NewEmail, request.Password);
+        
+        return Results.Ok("Email updated");
+    }
+    
+    private static async Task<IResult> DeleteUser(LoginUserRequest request, UsersService usersService)
+    {
+        await usersService.DeleteUser(request.Email, request.Password);
+        
+        return Results.Ok("User deleted");
     }
 }
