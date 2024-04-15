@@ -40,19 +40,19 @@ public static class ApiExtensions
                     }
                 };
             });
-        // TODO: Add a role hierarchy
+        
         services.AddAuthorization(options =>
         {
             options.AddPolicy("UserPolicy", policy =>
             {
                 policy.RequireAuthenticatedUser();
-                policy.RequireRole("user");
+                policy.RequireRole("user", "admin", "SuperAdmin");
             });
             
             options.AddPolicy("AdminPolicy", policy =>
             {
                 policy.RequireAuthenticatedUser();
-                policy.RequireRole("admin");
+                policy.RequireRole("admin", "SuperAdmin");
             });
             
             options.AddPolicy("SuperAdminPolicy", policy =>
