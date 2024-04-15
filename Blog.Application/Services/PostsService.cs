@@ -34,8 +34,17 @@ public class PostsService
         return await _postRepository.GetAll();
     }
     
-    public async Task Delete(Guid id)
+    public async Task Delete(Guid id, string token)
     {
+        var post = await _postRepository.Get(id);
+
+        var userId = _jwtProvider.GetUserId(token);
+
+        if (post.UserId != Guid.Parse(userId))
+        {
+            throw new Exception("You are not owner");
+        }
+
         await _postRepository.Delete(id);
     }
 }
