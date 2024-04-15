@@ -97,15 +97,10 @@ public class UsersService
         await _userRepository.UpdateEmail(user.Id, newEmail);
     }
 
-    public async Task DeleteUser(string email, string password)
+    public async Task DeleteUser(string token)
     {
-        var user = await _userRepository.GetByEmail(email);
+        var userId = _jwtProvider.GetUserId(token);
         
-        if (!_passwordHasher.Verify(password, user.PasswordHash))
-        {
-            throw new Exception("Wrong password");
-        }
-        
-        await _userRepository.Delete(user.Id);
+        await _userRepository.Delete(Guid.Parse(userId));
     }
 }

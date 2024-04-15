@@ -26,7 +26,7 @@ public static class UsersEndpoints
         endpoints.MapPost("update-email", UpdateEmail)
             .RequireAuthorization();
 
-        endpoints.MapDelete("delete", DeleteUser)
+        endpoints.MapDelete("deleteMe", DeleteUser)
             .RequireAuthorization();
         
         return endpoints;
@@ -80,10 +80,14 @@ public static class UsersEndpoints
         return Results.Ok("Email updated");
     }
     
-    // TODO: Fix this (attribute not working)
-    private static async Task<IResult> DeleteUser([FromBody] LoginUserRequest request, [FromServices] UsersService usersService)
+    
+    private static async Task<IResult> DeleteUser(UsersService usersService, HttpContext context)
     {
-        await usersService.DeleteUser(request.Email, request.Password);
+        var token = context.Request.Cookies["cookies"] ?? string.Empty;
+        
+        await usersService.DeleteUser(token);
+        
+        context.Response.Cookies.Delete("cookies");
         
         return Results.Ok("User deleted");
     }
