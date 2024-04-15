@@ -12,5 +12,5 @@ public interface IPostRepository
     
     Task Delete(Guid id);
 
-    Task<Post> Update(Guid id);
+    Task<Post> Update(Guid id, string title, string content);
 }

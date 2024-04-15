@@ -15,13 +15,15 @@ public class PostsService
         _jwtProvider = jwtProvider;
     }
     
-    public async Task Add(string title, string content, string token)
+    public async Task<Post> Add(string title, string content, string token)
     {
         var userId = _jwtProvider.GetUserId(token);
 
         var post = Post.Create(Guid.NewGuid(), title, content, Guid.Parse(userId));
         
         await _postRepository.Add(post, Guid.Parse(userId));
+        
+        return post;
     }
     
     public async Task<Post> Get(Guid id)
@@ -48,7 +50,7 @@ public class PostsService
         await _postRepository.Delete(id);
     }
 
-    public async Task<Post> Update(Guid id, string token)
+    public async Task<Post> Update(Guid id, string title, string content, string token)
     {
         var postToUpdate = await _postRepository.Get(id);
 
@@ -59,7 +61,7 @@ public class PostsService
             throw new Exception("You are not owner");
         }
 
-        var post = await _postRepository.Update(id);
+        var post = await _postRepository.Update(id, title, content);
 
         return post;
     }

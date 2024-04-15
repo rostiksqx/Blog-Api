@@ -58,11 +58,16 @@ public class PostRepository : IPostRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task Update(Guid id)
+    public async Task<Post> Update(Guid id, string title, string content)
     {
         var postEntity = await _dbContext.Posts
-            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Post not found");
-
+            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Post not found.");
         
+        postEntity.Title = title;
+        postEntity.Content = content;
+        
+        await _dbContext.SaveChangesAsync();
+        
+        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId);
     }
 }
