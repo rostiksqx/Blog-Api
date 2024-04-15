@@ -23,9 +23,11 @@ builder.Services.AddDbContext<BlogDbContext>(
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
 builder.Services.AddScoped<UsersService>();
 builder.Services.AddScoped<PostsService>();
+builder.Services.AddScoped<AdminsService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

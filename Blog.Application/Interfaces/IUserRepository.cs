@@ -10,8 +10,6 @@ public interface IUserRepository
     
     Task<User> GetUser(Guid id);
     
-    Task PromoteToAdmin(Guid id);
-    
     Task UpdatePassword(Guid id, string newPassword);
 
     Task UpdateEmail(Guid id, string newEmail);

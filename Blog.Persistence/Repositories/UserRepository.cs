@@ -47,15 +47,6 @@ public class UserRepository : IUserRepository
         return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, userEntity.Posts.Select(p => new Post(p.Id, p.Title, p.Content, p.UserId)).ToList());
     }
 
-    public async Task PromoteToAdmin(Guid id)
-    {
-        var userEntity = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
-        
-        userEntity.Role = "admin";
-        await _dbContext.SaveChangesAsync();
-    }
-
     public async Task UpdatePassword(Guid id, string newPassword)
     {
         var userEntity = await _dbContext.Users

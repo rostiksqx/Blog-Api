@@ -53,22 +53,6 @@ public class UsersService
         return userResponse;
     }
 
-    public async Task PromoteToAdmin(Guid id)
-    {
-        var user = await _userRepository.GetUser(id);
-
-        switch (user.Role)
-        {
-            case "admin":
-                throw new Exception("User is already admin");
-            case "SuperAdmin":
-                throw new Exception("You cannot promote this user");
-            default:
-                await _userRepository.PromoteToAdmin(id);
-                break;
-        }
-    }
-
     public async Task UpdatePassword(string token, string password, string newPassword)
     {
         var userId = _jwtProvider.GetUserId(token);

@@ -17,9 +17,6 @@ public static class UsersEndpoints
         endpoints.MapGet("me", GetMe)
             .RequireAuthorization();
         
-        endpoints.MapGet("{userId:guid}/promote", PromoteUser)
-            .RequireAuthorization("SuperAdminPolicy");
-        
         endpoints.MapPost("update-password", UpdatePassword)
             .RequireAuthorization();
 
@@ -57,13 +54,6 @@ public static class UsersEndpoints
         return Results.Ok("Welcome back!");
     }
     
-    private static async Task<IResult> PromoteUser(Guid userId, UsersService usersService)
-    {
-        await usersService.PromoteToAdmin(userId);
-        
-        return Results.Ok("User promoted");
-    }
-    
     private static async Task<IResult> UpdatePassword(UpdatePasswordRequest request, UsersService usersService, HttpContext context)
     {
         var token = context.Request.Cookies["cookies"] ?? string.Empty;
@@ -79,7 +69,6 @@ public static class UsersEndpoints
         
         return Results.Ok("Email updated");
     }
-    
     
     private static async Task<IResult> DeleteUser(UsersService usersService, HttpContext context)
     {

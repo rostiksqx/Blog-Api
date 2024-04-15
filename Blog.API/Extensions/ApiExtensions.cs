@@ -12,6 +12,7 @@ public static class ApiExtensions
     {
         app.MapUsersEndpoints();
         app.MapPostEndpoints();
+        app.MapAdminsEndpoints();
     }
 
     public static void AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)
