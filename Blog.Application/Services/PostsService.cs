@@ -47,4 +47,20 @@ public class PostsService
 
         await _postRepository.Delete(id);
     }
+
+    public async Task<Post> Update(Guid id, string token)
+    {
+        var postToUpdate = await _postRepository.Get(id);
+
+        var userId = _jwtProvider.GetUserId(token);
+
+        if (postToUpdate.UserId != Guid.Parse(userId))
+        {
+            throw new Exception("You are not owner");
+        }
+
+        var post = await _postRepository.Update(id);
+
+        return post;
+    }
 }

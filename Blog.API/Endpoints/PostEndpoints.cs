@@ -18,8 +18,8 @@ public static class PostEndpoints
         
         endpoints.MapDelete("/{postId:guid}", DeletePost);
         // TODO: Add logic and functionality to update post (only owner can update post)
-        // endpoints.MapPut("/{id:guid}", UpdatePost);
-        
+        endpoints.MapPut("/{id:guid}", UpdatePost);
+
         return endpoints;
     }
     
@@ -54,5 +54,14 @@ public static class PostEndpoints
         await postsService.Delete(postId, token);
         
         return Results.Ok("Post deleted");
+    }
+
+    private static async Task<IResult> UpdatePost(Guid postId, PostsService postsService, HttpContext context)
+    {
+        var token = context.Request.Cookies["cookies"] ?? string.Empty;
+
+        var post = await postsService.Update(postId, token);
+
+        return Results.Ok(post);
     }
 }

@@ -11,4 +11,6 @@ public interface IPostRepository
     Task<IEnumerable<Post>> GetAll();
     
     Task Delete(Guid id);
+
+    Task<Post> Update(Guid id);
 }

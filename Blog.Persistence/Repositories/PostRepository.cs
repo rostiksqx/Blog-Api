@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Models;
 using Blog.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace Blog.Persistence.Repositories;
 
@@ -55,5 +56,13 @@ public class PostRepository : IPostRepository
         
         _dbContext.Posts.Remove(postEntity);
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task Update(Guid id)
+    {
+        var postEntity = await _dbContext.Posts
+            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Post not found");
+
+        
     }
 }
