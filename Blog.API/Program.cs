@@ -14,6 +14,7 @@ builder.Services.AddApiAuthentication(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 
 builder.Services.AddDbContext<BlogDbContext>(
     options =>
@@ -53,5 +54,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.AddMappedEndpoints();
+
+app.UseCors(x =>
+{
+    x.WithHeaders().AllowAnyHeader();
+    x.WithOrigins("http://localhost:3000");
+    x.WithMethods().AllowAnyMethod();
+});
 
 app.Run();

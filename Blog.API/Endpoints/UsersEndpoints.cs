@@ -51,7 +51,7 @@ public static class UsersEndpoints
         
         context.Response.Cookies.Append("cookies", token);
         
-        return Results.Ok("Welcome back!");
+        return Results.Ok(new { Token = token });
     }
     
     private static async Task<IResult> UpdatePassword(UpdatePasswordRequest request, UsersService usersService, HttpContext context)
