@@ -25,13 +25,16 @@ public static class UsersEndpoints
 
         endpoints.MapDelete("deleteMe", DeleteUser)
             .RequireAuthorization();
+
+        endpoints.MapGet("{userId:guid}", GetUser)
+            .RequireAuthorization();
         
         return endpoints;
     }
 
     private static async Task<IResult> GetMe(UsersService usersService, HttpContext context)
     {
-        var token = context.Request.Cookies["cookies"] ?? string.Empty;
+        var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
         
         var user = await usersService.GetUser(token);
         
@@ -79,5 +82,12 @@ public static class UsersEndpoints
         context.Response.Cookies.Delete("cookies");
         
         return Results.Ok("User deleted");
+    }
+
+    private static async Task<IResult> GetUser(Guid userId, UsersService usersService)
+    {
+        var user = await usersService.GetUser(userId);
+        
+        return Results.Ok(user);
     }
 }

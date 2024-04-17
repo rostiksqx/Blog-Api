@@ -53,6 +53,15 @@ public class UsersService
         return userResponse;
     }
 
+    public async Task<UserResponse> GetUser(Guid id)
+    {
+        var user = await _userRepository.GetUser(id);
+        
+        var userResponse = new UserResponse(user.Id, user.Username, user.Email, user.Role, user.Posts);
+        
+        return userResponse;
+    }
+
     public async Task UpdatePassword(string token, string password, string newPassword)
     {
         var userId = _jwtProvider.GetUserId(token);
