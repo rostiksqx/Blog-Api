@@ -52,9 +52,9 @@ public class PostRepository : IPostRepository
     public async Task Delete(Guid id)
     {
         var postEntity = await _dbContext.Posts
-            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Post not found.");
+            .Where(p => p.Id == id)
+            .ExecuteDeleteAsync();
         
-        _dbContext.Posts.Remove(postEntity);
         await _dbContext.SaveChangesAsync();
     }
 
@@ -66,6 +66,7 @@ public class PostRepository : IPostRepository
         postEntity.Title = title;
         postEntity.Content = content;
         
+        _dbContext.Posts.Update(postEntity);
         await _dbContext.SaveChangesAsync();
         
         return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId);
