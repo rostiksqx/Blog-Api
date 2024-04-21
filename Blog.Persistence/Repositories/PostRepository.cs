@@ -21,7 +21,9 @@ public class PostRepository : IPostRepository
             Id = post.Id,
             Title = post.Title,
             Content = post.Content,
-            UserId = userId
+            UserId = userId,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         
         await _dbContext.Posts.AddAsync(postEntity);
@@ -31,10 +33,12 @@ public class PostRepository : IPostRepository
     public async Task<Post> Get(Guid id)
     {
         var postEntity = await _dbContext.Posts
-            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Post not found.");
         
-        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId);
+        postEntity.ViewsCount += 1;
+        await _dbContext.SaveChangesAsync();
+        
+        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId, postEntity.ViewsCount);
     }
     
     public async Task<IEnumerable<Post>> GetAll()
@@ -44,7 +48,7 @@ public class PostRepository : IPostRepository
             .ToListAsync();
         
         var posts = postEntities
-            .Select(x => new Post(x.Id, x.Title, x.Content, x.UserId));
+            .Select(x => new Post(x.Id, x.Title, x.Content, x.UserId, x.ViewsCount));
         
         return posts;
     }
@@ -65,10 +69,11 @@ public class PostRepository : IPostRepository
         
         postEntity.Title = title;
         postEntity.Content = content;
+        postEntity.UpdatedAt = DateTime.UtcNow;
         
         _dbContext.Posts.Update(postEntity);
         await _dbContext.SaveChangesAsync();
         
-        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId);
+        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId, postEntity.ViewsCount);
     }
 }

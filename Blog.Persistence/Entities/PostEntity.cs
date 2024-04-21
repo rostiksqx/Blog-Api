@@ -11,4 +11,10 @@ public class PostEntity
     public Guid UserId { get; set; }
     
     public UserEntity? User { get; set; }
+    
+    public int ViewsCount { get; set; }
+    
+    public DateTime CreatedAt { get; set; }
+    
+    public DateTime UpdatedAt { get; set; }
 }
