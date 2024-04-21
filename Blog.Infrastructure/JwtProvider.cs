@@ -9,6 +9,7 @@ namespace Blog.Infrastructure;
 
 public class JwtProvider : IJwtProvider
 {
+    // TODO: Environment variables for security
     private readonly JwtOptions _options;
 
     public JwtProvider(IOptions<JwtOptions> options)

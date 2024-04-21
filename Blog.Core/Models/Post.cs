@@ -25,6 +25,9 @@ public class Post
     
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
+    // TODO: Save image to database or add local storage
+    // public byte[] Image { get; set; }
+
     public static Post Create(Guid id, string title, string content, Guid userId, int viewCount = 0)
     {
         var error = string.Empty;
