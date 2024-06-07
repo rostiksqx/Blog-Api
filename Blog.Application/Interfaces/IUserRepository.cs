@@ -8,6 +8,8 @@ public interface IUserRepository
     
     Task<User> GetByEmail(string email);
     
+    Task<User> GetByUsername(string username);
+    
     Task<User> GetUser(Guid id);
     
     Task UpdatePassword(Guid id, string newPassword);

@@ -29,9 +29,11 @@ public class UsersService
         await _userRepository.Add(user);
     }
 
-    public async Task<string> Login(string email, string password)
+    public async Task<string> Login(string emailOrUsername, string password)
     {
-        var user = await _userRepository.GetByEmail(email);
+        var user = await _userRepository.GetByEmail(emailOrUsername) ??
+                   await _userRepository.GetByUsername(emailOrUsername) ?? 
+                   throw new Exception("User not found");
         
         var result = _passwordHasher.Verify(password, user.PasswordHash);
 

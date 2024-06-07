@@ -28,13 +28,28 @@ public class UserRepository : IUserRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<User> GetByEmail(string email)
+    public async Task<User?> GetByEmail(string email)
     {
         var userEntity = await _dbContext.Users
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Email == email) ?? throw new Exception("User not found");
+            .FirstOrDefaultAsync(x => x.Email == email);
 
-        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, []);
+
+        return userEntity == null 
+            ? null
+            : new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, []);
+    }
+    
+    public async Task<User?> GetByUsername(string username)
+    {
+        var userEntity = await _dbContext.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Username == username);
+        
+
+        return userEntity == null 
+            ? null
+            : new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, []);
     }
 
     public async Task<User> GetUser(Guid id)

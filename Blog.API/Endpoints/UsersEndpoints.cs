@@ -52,7 +52,7 @@ public static class UsersEndpoints
 
     private static async Task<IResult> Login(LoginUserRequest request, UsersService usersService, HttpContext context)
     {
-        var token = await usersService.Login(request.Email, request.Password);
+        var token = await usersService.Login(request.EmailOrUsername, request.Password);
         
         context.Response.Cookies.Append("cookies", token);
         
