@@ -1,4 +1,6 @@
 using Blog.API.Extensions;
+using Blog.API.MapperConfig;
+using Blog.Application.Interfaces;
 using Blog.Application.Services;
 using Blog.Infrastructure;
 using Blog.Persistence;
@@ -15,6 +17,8 @@ builder.Services.AddApiAuthentication(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddDbContext<BlogDbContext>(
     options =>

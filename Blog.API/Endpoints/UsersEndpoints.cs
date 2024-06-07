@@ -1,5 +1,7 @@
-﻿using Blog.API.Contracts;
+﻿using AutoMapper;
+using Blog.API.Contracts;
 using Blog.Application.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Endpoints;
@@ -45,7 +47,7 @@ public static class UsersEndpoints
     {
         await usersService.Register(request.Username, request.Email, request.Password);
         
-        return Results.Ok("Welcome to Blog!");
+        return Results.Ok();
     }
 
     private static async Task<IResult> Login(LoginUserRequest request, UsersService usersService, HttpContext context)

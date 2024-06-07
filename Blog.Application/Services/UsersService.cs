@@ -1,4 +1,6 @@
-﻿using Blog.Core.Models;
+﻿using AutoMapper;
+using Blog.Application.Interfaces;
+using Blog.Core.Models;
 using Blog.Infrastructure;
 using Blog.Persistence.Repositories;
 
@@ -10,7 +12,8 @@ public class UsersService
     private readonly IUserRepository _userRepository;
     private readonly IJwtProvider _jwtProvider;
 
-    public UsersService(IPasswordHasher passwordHasher, IUserRepository userRepository, IJwtProvider jwtProvider)
+    public UsersService(IPasswordHasher passwordHasher, IUserRepository userRepository, 
+        IJwtProvider jwtProvider)
     {
         _passwordHasher = passwordHasher;
         _userRepository = userRepository;
@@ -44,9 +47,9 @@ public class UsersService
     
     public async Task<UserResponse> GetUser(string token)
     {
-        var userId = _jwtProvider.GetUserId(token);
+        var userClaims = _jwtProvider.GetClaims(token);
         
-        var user = await _userRepository.GetUser(Guid.Parse(userId));
+        var user = await _userRepository.GetUser(Guid.Parse(userClaims.UserId));
         
         var userResponse = new UserResponse(user.Id, user.Username, user.Email, user.Role, user.Posts);
         
@@ -64,9 +67,9 @@ public class UsersService
 
     public async Task UpdatePassword(string token, string password, string newPassword)
     {
-        var userId = _jwtProvider.GetUserId(token);
+        var userClaims = _jwtProvider.GetClaims(token);
         
-        var user = await _userRepository.GetUser(Guid.Parse(userId));
+        var user = await _userRepository.GetUser(Guid.Parse(userClaims.UserId));
         
         if (!_passwordHasher.Verify(password, user.PasswordHash))
         {
@@ -75,7 +78,7 @@ public class UsersService
         
         var hashPassword = _passwordHasher.Generate(newPassword);
         
-        await _userRepository.UpdatePassword(Guid.Parse(userId), hashPassword);
+        await _userRepository.UpdatePassword(Guid.Parse(userClaims.UserId), hashPassword);
     }
 
     public async Task UpdateEmail(string email, string newEmail, string password)
@@ -92,8 +95,8 @@ public class UsersService
 
     public async Task DeleteUser(string token)
     {
-        var userId = _jwtProvider.GetUserId(token);
+        var userClaims = _jwtProvider.GetClaims(token);
         
-        await _userRepository.Delete(Guid.Parse(userId));
+        await _userRepository.Delete(Guid.Parse(userClaims.UserId));
     }
 }

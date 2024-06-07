@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Blog.Application.Interfaces;
 using Blog.Core.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +23,7 @@ public class JwtProvider : IJwtProvider
         var claims = new[]
         {
             new Claim("userId", user.Id.ToString()),
+            new Claim("username", user.Username),
             new Claim("role", user.Role)
         };
         
@@ -39,11 +41,14 @@ public class JwtProvider : IJwtProvider
         return tokenValue;
     }
     
-    public string GetUserId(string token)
+    public UserClaims GetClaims(string token)
     {
         var handler = new JwtSecurityTokenHandler();
         var tokenS = handler.ReadToken(token) as JwtSecurityToken;
-        
-        return tokenS!.Claims.First(claim => claim.Type == "userId").Value ?? string.Empty;
+
+        return new UserClaims(
+            tokenS!.Claims.First(claim => claim.Type == "userId").Value ?? string.Empty,
+            tokenS!.Claims.First(claim => claim.Type == "username").Value ?? string.Empty,
+            tokenS!.Claims.First(claim => claim.Type == "role").Value ?? string.Empty);
     }
 }

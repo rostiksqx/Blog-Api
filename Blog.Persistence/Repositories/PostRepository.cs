@@ -33,22 +33,25 @@ public class PostRepository : IPostRepository
     public async Task<Post> Get(Guid id)
     {
         var postEntity = await _dbContext.Posts
-            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Post not found.");
+            .Include(p => p.User)
+            .FirstOrDefaultAsync(x => x.Id == id)
+                         ?? throw new Exception("Post not found.");
         
         postEntity.ViewsCount += 1;
         await _dbContext.SaveChangesAsync();
         
-        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId, postEntity.ViewsCount);
+        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId, postEntity.ViewsCount, postEntity.User!.Username);
     }
     
     public async Task<IEnumerable<Post>> GetAll()
     {
         var postEntities = await _dbContext.Posts
+            .Include(p => p.User)
             .AsNoTracking()
             .ToListAsync();
         
         var posts = postEntities
-            .Select(x => new Post(x.Id, x.Title, x.Content, x.UserId, x.ViewsCount));
+            .Select(x => new Post(x.Id, x.Title, x.Content, x.UserId, x.ViewsCount, x.User!.Username));
         
         return posts;
     }
@@ -65,6 +68,7 @@ public class PostRepository : IPostRepository
     public async Task<Post> Update(Guid id, string title, string content)
     {
         var postEntity = await _dbContext.Posts
+            .Include(p => p.User)
             .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Post not found.");
         
         postEntity.Title = title;
@@ -74,6 +78,6 @@ public class PostRepository : IPostRepository
         _dbContext.Posts.Update(postEntity);
         await _dbContext.SaveChangesAsync();
         
-        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId, postEntity.ViewsCount);
+        return new Post(postEntity.Id, postEntity.Title, postEntity.Content, postEntity.UserId, postEntity.ViewsCount, postEntity.User!.Username);
     }
 }

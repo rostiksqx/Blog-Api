@@ -44,7 +44,7 @@ public class UserRepository : IUserRepository
             .Include(x => x.Posts)
             .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
 
-        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, userEntity.Posts.Select(p => new Post(p.Id, p.Title, p.Content, p.UserId, p.ViewsCount)).ToList());
+        return new User(userEntity.Id, userEntity.Username, userEntity.Email, userEntity.PasswordHash, userEntity.Role, userEntity.Posts.Select(p => new Post(p.Id, p.Title, p.Content, p.UserId, p.ViewsCount, p.User!.Username)).ToList());
     }
 
     public async Task UpdatePassword(Guid id, string newPassword)

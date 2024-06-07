@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace AuthCookies.Persistence.Migrations
+namespace Blog.Persistence.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20240412203835_UserRole")]
-    partial class UserRole
+    [Migration("20240607153624_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,12 +35,21 @@ namespace AuthCookies.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

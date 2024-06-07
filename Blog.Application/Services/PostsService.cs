@@ -1,4 +1,5 @@
-﻿using Blog.Core.Models;
+﻿using Blog.Application.Interfaces;
+using Blog.Core.Models;
 using Blog.Infrastructure;
 using Blog.Persistence.Repositories;
 
@@ -8,18 +9,22 @@ public class PostsService
 {
     private readonly IPostRepository _postRepository;
     private readonly IJwtProvider _jwtProvider;
+    private readonly IUserRepository _userRepository;
 
-    public PostsService(IPostRepository postRepository, IJwtProvider jwtProvider)
+    public PostsService(IPostRepository postRepository, IJwtProvider jwtProvider, IUserRepository userRepository)
     {
         _postRepository = postRepository;
         _jwtProvider = jwtProvider;
+        _userRepository = userRepository;
     }
     
     public async Task<Post> Add(string title, string content, string token)
     {
-        var userId = _jwtProvider.GetUserId(token);
+        var userClaims = _jwtProvider.GetClaims(token);
 
-        var post = Post.Create(Guid.NewGuid(), title, content, Guid.Parse(userId));
+        var userId = userClaims.UserId;
+        
+        var post = Post.Create(Guid.NewGuid(), title, content, Guid.Parse(userId), userClaims.Username);
         
         await _postRepository.Add(post, Guid.Parse(userId));
         
@@ -40,9 +45,9 @@ public class PostsService
     {
         var post = await _postRepository.Get(id);
 
-        var userId = _jwtProvider.GetUserId(token);
+        var userClaims = _jwtProvider.GetClaims(token);
 
-        if (post.UserId != Guid.Parse(userId))
+        if (post.UserId != Guid.Parse(userClaims.UserId))
         {
             throw new Exception("You are not owner");
         }
@@ -54,9 +59,9 @@ public class PostsService
     {
         var postToUpdate = await _postRepository.Get(id);
 
-        var userId = _jwtProvider.GetUserId(token);
+        var userClaims = _jwtProvider.GetClaims(token);
 
-        if (postToUpdate.UserId != Guid.Parse(userId))
+        if (postToUpdate.UserId != Guid.Parse(userClaims.UserId))
         {
             throw new Exception("You are not owner");
         }

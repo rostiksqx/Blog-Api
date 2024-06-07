@@ -2,13 +2,14 @@
 
 public class Post
 {
-    public Post(Guid id, string title, string content, Guid userId, int viewCount)
+    public Post(Guid id, string title, string content, Guid userId, int viewCount, string author)
     {
         Id = id;
         Title = title;
         Content = content;
         UserId = userId;
         ViewCount = viewCount;
+        Author = author;
     }
     
     public Guid Id { get;}
@@ -19,6 +20,8 @@ public class Post
     
     public Guid UserId { get; }
     
+    public string Author { get; }
+    
     public int ViewCount { get; set; }
     
     public DateTime CreatedAt { get; } = DateTime.UtcNow;
@@ -28,7 +31,7 @@ public class Post
     // TODO: Save image to database or add local storage
     // public byte[] Image { get; set; }
 
-    public static Post Create(Guid id, string title, string content, Guid userId, int viewCount = 0)
+    public static Post Create(Guid id, string title, string content, Guid userId, string author, int viewCount = 0)
     {
         var error = string.Empty;
 
@@ -42,7 +45,7 @@ public class Post
             throw new ArgumentException(error);
         }
 
-        var post = new Post(id, title, content, userId, viewCount);
+        var post = new Post(id, title, content, userId, viewCount, author);
 
         return post;
     }

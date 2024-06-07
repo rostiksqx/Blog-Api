@@ -1,10 +1,10 @@
 ﻿using Blog.Core.Models;
 
-namespace Blog.Infrastructure;
+namespace Blog.Application.Interfaces;
 
 public interface IJwtProvider
 {
     string GenerateToken(User user);
-    
-    string GetUserId(string token);
+
+    UserClaims GetClaims(string token);
 }
